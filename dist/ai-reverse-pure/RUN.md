@@ -11,13 +11,21 @@ python check_env.py                # 环境自检
 
 ## 配置凭证（只需一次）
 
-`config/` 下的 `.example` 文件复制成无后缀版本，粘贴真实值：
+**方式 A — 自动提取（推荐）**：浏览器已登录的情况下，一条命令搞定全部配置
 
 ```bash
-cp config/douyin.cookie.txt.example   config/douyin.cookie.txt
-cp config/kuaishou.cookie.txt.example config/kuaishou.cookie.txt
-cp config/session.secrets.json.example config/session.secrets.json
+# Firefox/指纹浏览器: cookie 在 profile/cookies.sqlite 明文, 直接读
+python extract_creds.py --douyin-profile <抖音profile目录> \
+                        --kuaishou-profile <快手profile目录> \
+                        --fp-file <指纹文件(可选, 提取UA)>
+
+# 自动探测模式: profile 放本目录或上级目录 (名字含 douyin/kuaishou/ks) 即可
+python extract_creds.py
 ```
+
+自动解出: cookie 全量 / uifid / webid(从 web_sign_token JWT) / verifyFp / fp / msToken / ua
+
+**方式 B — 手动**：`config/` 下 `.example` 复制成无后缀版填真实值
 
 | 文件 | 填什么 |
 |---|---|
