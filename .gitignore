@@ -1,0 +1,24 @@
+# 会话/凭证 —— 绝不进仓库
+cookie.txt
+session.secrets.json
+secrets*.json
+*.session
+
+# 下载产物
+videos/
+*.mp4
+*.webm
+out.json
+signed_url.txt
+*_url.txt
+
+# 运行时
+node_modules/
+__pycache__/
+*.pyc
+*.log
+
+# 调试副本
+bdms_dbg.js
+webSign_instrumented.js
+*_dbg.js
