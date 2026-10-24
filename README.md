@@ -51,6 +51,17 @@ python ks_pure.py search 篮球 -n 40 -o out.json
 python ks_pure.py download out.json ./videos
 ```
 
+## 浏览器（分片存储）
+
+`browser/` 下是指纹浏览器运行时的分片 zip（ruyipage + 定制 Firefox, 149MB 拆成 3×50MB）：
+
+```bash
+python browser/assemble_browser.py   # 拼回 ruyipage-with-browser.zip 并校验
+# 解压后即是完整指纹浏览器, 用于登录/养号
+```
+
+**仅用于登录取凭证** — 签名本身不需要浏览器。
+
 ## 会话输入（不随仓库分发）
 
 签名本身零网络，但 URL 里要携带会话字段，放在仓库外：

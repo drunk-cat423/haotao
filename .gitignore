@@ -22,3 +22,8 @@ __pycache__/
 bdms_dbg.js
 webSign_instrumented.js
 *_dbg.js
+
+# 浏览器重组产物 (只在本地拼, 不进git — 分片已跟踪)
+browser/ruyipage-with-browser.zip
+browser/ruyipage-with-browser/
+
