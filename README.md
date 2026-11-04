@@ -1,8 +1,8 @@
 # ai-reverse
 
-抖音 / 快手 Web 接口签名纯算逆向。
+抖音 / 快手 / 知乎 Web 接口签名纯算逆向。
 
-两个平台的请求签名都已脱离浏览器独立实现：**无浏览器、无自动化、无握手、纯本地计算**。
+三个平台的请求签名都已脱离浏览器独立实现：**无浏览器、无自动化、无握手、纯本地计算**。
 
 ## 目录
 
@@ -20,6 +20,9 @@ kuaishou/
     ks_sign.js          Node 签名器
     ks_pure.py          Python 客户端 (search/download/pcursor 翻页)
     test_replay.py      重放验证
+zhihu/
+  zh_sign.js       x-zse-96 纯算签名器 (heifetz m1514 JSVMP + m10261 MD5)
+  zh_pure.py       Python 客户端 (login 扫码/search/sign)
 ```
 
 ## 抖音 `a_bogus`
@@ -49,6 +52,36 @@ python dy_abogus.py download out.json ./videos
 cd kuaishou/pure
 python ks_pure.py search 篮球 -n 40 -o out.json
 python ks_pure.py download out.json ./videos
+```
+
+## 快手账号工具 `kuaishou/pub`
+
+指纹浏览器 + ruyipage 驱动的扫码登录 / 账号登记 / 视频发布（不是纯算——走定制内核真实浏览器）：
+
+```bash
+cd kuaishou/pub
+python ks.py login acc1                       # 扫码登录 → accounts.json + cookie.txt
+python ks.py accounts                          # 已登记账号
+python ks.py publish acc1 D:\v.mp4 "标题" "描述 #话题"   # 发布 (--dry-run 先跑到发布前)
+python ks.py cookie acc1                       # 导出 cookie 给 ../pure 纯算用
+```
+
+- 登录判定以页面 UI 为准（cookie 服务端可能过期）；轮询走 BiDi 实时 cookie（Firefox 运行期不落 sqlite）
+- 上传直达 `cp.kuaishou.com/article/publish/video`，`input.setFiles` 传文件；描述框 contenteditable 用 BiDi 真键盘输入
+- 需要 `browser/` 分片先重组出 ruyipage + 定制 Firefox；`ks_common.py` 里的路径按本地目录调整
+
+## 知乎 `x-zse-96`
+
+签名 = `"2.0_" + ZP(md5hex(source))`，`source=[zse93,path+search,d_c0,body≤4K,xZst81]` 用 `+` 拼接：
+
+- `ZP` 是 heifetz `2878.app` 模块 1514 的自研 JSVMP（加载时装配 SM4 风格 S 盒/轮密钥表），扣出后在 Node 直跑
+- `x-zst-81` 由 zswsdid SDK 产出（会话内恒定），服务端接受不带它的请求 —— 可省
+- `search_v3` 需登录 `z_c0`（401 ZERR_NOT_LOGIN），扫码一次落 cookie.txt
+
+```bash
+cd zhihu
+python zh_pure.py login            # 指纹浏览器扫码
+python zh_pure.py search 篮球 -n 2
 ```
 
 ## 浏览器（分片存储）

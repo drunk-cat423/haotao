@@ -27,3 +27,22 @@ webSign_instrumented.js
 browser/ruyipage-with-browser.zip
 browser/ruyipage-with-browser/
 
+# 指纹浏览器会话 (含登录态 cookie, 不进仓库)
+*_profile/
+
+# web-reverse 任务工作区 + 外部参考包 (含抓包 cookie, 不进仓库)
+artifacts/
+ref/
+
+# 快手发布工具运行时产物 (profile含登录态, 绝不进仓库)
+kuaishou/pub/profiles/
+kuaishou/pub/accounts.json
+kuaishou/pub/qrcode_*.png
+kuaishou/pub/pub_*.png
+kuaishou/pub/pub_state_*.json
+kuaishou/pub/debug_*.png
+kuaishou/pub/*_dom.txt
+kuaishou/pub/editor.png
+kuaishou/pub/upload_page.png
+kuaishou/pub/manage.png
+
